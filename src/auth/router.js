@@ -30,8 +30,18 @@ authRouter.get('/api/showMeTheMoney', auth, (req,res,next) => {
   res.send('Here is all the ca$h');
 });
 
-authRouter.get('/api/free', (req,res) => {
+authRouter.delete('/api/free', auth, (req,res) => {
   res.send('Here is all the ca$h');
 });
+
+authRouter.get('/api/free', auth, (req,res) => {
+  res.send('Here is all the ca$h');
+});
+
+authRouter.put('/api/freePut', auth, (req,res) => {
+  res.send('Here is all the ca$h');
+});
+
+
 
 export default authRouter;
