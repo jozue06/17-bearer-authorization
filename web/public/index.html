@@ -5,25 +5,16 @@
     </head>
     <body>
         <main>
-
-            <div id="oauth"></div>
-
-            <hr>
-
             Access Token: <span id="token"></span>
             <hr>
             <h2>Sign Up</h2>
             <form id="signup">
                 <label>
-                Username: <input name="username" required />
+                Username: <input name="username">
                 </label>
 
                 <label>
-                    Email: <input name="email" type="email" required />
-                </label>
-
-                <label>
-                    Password: <input name="password" type="password" required />
+                    Password: <input name="password" type="password" />
                 </label>
 
                 <input type="submit" value="Create User" />
@@ -64,7 +55,7 @@
                 headers: {
                   "Authorization": "Bearer " + token
                 },
-                url: "http://localhost:3000/showMeTheMoney",
+                url: "http://localhost:3300/api/showMeTheMoney",
                 async: false,
                 success: function(data){
                   $('#cash').text(data);
@@ -74,12 +65,11 @@
             $('#signup').on('submit', function(e) {
               let username = $(this).find('[name=username]').val();
               let password = $(this).find('[name=password]').val();
-              let email = $(this).find('[name=email]').val();
-              let postData = {username,password,email};
+              let postData = {username,password};
               e.preventDefault();
               $.ajax({
                 type: "POST",
-                url: "http://localhost:3000/signup",
+                url: "http://localhost:3300/api/signup",
                 async: false,
                 data: postData,
                 success: function(data){
@@ -96,7 +86,7 @@
               let authstring = btoa(`${username}:${password}`);
               $.ajax({
                 type: "GET",
-                url: "http://localhost:3000/signin",
+                url: "http://localhost:3300/api/signin",
                 async: false,
                 headers: {
                   "Authorization": "Basic " + authstring
@@ -109,23 +99,5 @@
               });
             });
         </script>
-
-        <script>
-          let googleURL = "https://accounts.google.com/o/oauth2/v2/auth";
-          let options = {
-            client_id:'',
-            redirect_uri: 'http://localhost:3000/oauth',
-            scope: 'email openid profile',
-            prompt: 'consent',
-            response_type: 'code'
-          }
-          let QueryString = Object.keys(options).map( (key,i) => {
-            return `${key}=` + encodeURIComponent(options[key]);
-          }).join("&");
-          let authURL = `${googleURL}?${QueryString}`;
-          $('#oauth').append(`<a href="${authURL}">Login With Google</a>`);
-        </script>
-
-
     </body>
 </html>

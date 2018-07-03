@@ -1,45 +1,36 @@
 'use strict';
 
 import express from 'express';
-
 const authRouter = express.Router();
 
 import User from './model.js';
 import auth from './middleware.js';
-import oauth from './lib/oauth.js';
+import errorBadReq from '../middleware/errorBadReq.js';
 
-// Generally, these will send a Token Cookie and do a redirect.
-// For now, just spew out the token to prove we're ok.
 
-authRouter.post('/signup', (req, res, next) => {
+authRouter.post('/api/signup', (req, res, next) => {
+  if(!Object.keys(req.body).length) {
+    errorBadReq(res);
+  }
   let user = new User(req.body);
   user.save()
-    .then( user => res.send(user.generateToken()) )
-    .catch(next);
-});
-
-authRouter.get('/login',auth, (req, res, next) => {
-  res.cookie('Token', req.token);
-  res.send(req.token);
-});
-
-authRouter.get('/oauth', (req, res, next) => {
-
-  let URL = process.env.CLIENT_URL;
-
-  // Offload the oauth handshaking process to a module designed
-  // to do that job. The route itself shouldn't contain any logic...
-  oauth.authorize(req)
-    .then ( token => {
-      res.cookie('Token', token);
-      res.redirect(URL);
+    .then( user => { 
+      res.send(user.generateToken());
     })
     .catch(next);
 });
 
-// A little proof of life here, to show how we can protect any
-// route with our auth middleware
-authRouter.get('/showMeTheMoney', auth, (req,res,next) => {
+
+authRouter.get('/api/signin',auth, (req, res, next) => {
+  res.cookie('Token', req.token);
+  res.send(req.token);
+});
+
+authRouter.get('/api/showMeTheMoney', auth, (req,res,next) => {
+  res.send('Here is all the ca$h');
+});
+
+authRouter.get('/api/free', (req,res) => {
   res.send('Here is all the ca$h');
 });
 
