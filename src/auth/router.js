@@ -35,6 +35,12 @@ authRouter.delete('/api/free', auth, (req,res) => {
 });
 
 authRouter.get('/api/free', auth, (req,res) => {
+  // check to ensure that bearer auth is present. if not, no access.
+  // call model methods here for specific task of route.
+  // add email. add userId to schema of model to reference.
+  if(req.token){
+    res.send('no way jose');
+  }
   res.send('Here is all the ca$h');
 });
 
