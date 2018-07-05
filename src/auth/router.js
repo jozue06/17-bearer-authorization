@@ -31,7 +31,7 @@ authRouter.get('/api/showMeTheMoney', auth, (req,res,next) => {
 });
 
 authRouter.delete('/api/free', auth, (req,res) => {
-  res.send('Here is all the ca$h');
+  res.send('thanks for deleting');
 });
 
 authRouter.get('/api/free', auth, (req,res) => {
@@ -45,7 +45,7 @@ authRouter.get('/api/free', auth, (req,res) => {
 });
 
 authRouter.put('/api/freePut', auth, (req,res) => {
-  res.send('Here is all the ca$h');
+  res.send('thanks for putting');
 });
 
 
