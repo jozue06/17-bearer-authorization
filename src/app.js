@@ -12,7 +12,7 @@ import notFound from './middleware/404.js';
 
 let app = express();
 let corsOptions={
-origin: 'localhost:3000',
+origin: 'http://localhost:3000',
 }
 
 app.use(cors(corsOptions));
