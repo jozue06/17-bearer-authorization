@@ -1,0 +1,50 @@
+'use strict';
+
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
+
+import authRouter from './auth/router.js';
+import publicRoute from './api/publicApi.js';
+
+import errorHandler from './middleware/error.js';
+import notFound from './middleware/404.js';
+
+let app = express();
+let corsOptions={
+origin: 'https://work-notes-temp.herokuapp.com',
+}
+
+app.use(cors(corsOptions));
+app.use(morgan('dev'));
+app.use(express.json());  // => req.body
+app.use(express.urlencoded({extended:true})); // req.body => from a form's key value pairs
+
+app.use(authRouter);
+app.use(publicRoute);
+
+app.use(notFound);
+app.use(errorHandler);
+
+let server = false;
+
+module.exports = {
+  start: (port) => {
+    if(!server) {
+      server = app.listen(port, (err) => {
+        if(err) { throw err; }
+        console.log('Server running on', port);
+      });
+    }
+    else {
+      console.log('Server is already running');
+    }
+  },
+
+  stop: () => {
+    server.close( () => {
+      console.log('Server is now off');
+    });
+  },
+};
+
