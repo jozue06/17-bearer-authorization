@@ -12,7 +12,7 @@ import notFound from './middleware/404.js';
 
 let app = express();
 let corsOptions={
-origin: 'https://work-notes-temp.herokuapp.com/',
+origin: 'https://work-notes-temp.herokuapp.com',
 }
 
 app.use(cors(corsOptions));
